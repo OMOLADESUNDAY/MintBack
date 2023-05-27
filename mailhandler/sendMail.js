@@ -8,7 +8,7 @@ const nodemailer = require("nodemailer");
          pass: process.env.GMAILPASS,
        },
      });
-
+     
   let info = await transporter.sendMail(
     {
       from: '"Developer" <davisdelilah908@gmail.com>',

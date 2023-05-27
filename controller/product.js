@@ -22,6 +22,19 @@ const getProduct = async(req, res) => {
         res.status(404).send({message:'Page not found'})
     }
 }
+
+const getProductOwner=async(req,res)=>{
+  const product =await Product.findOne({userId: { $eq: req.params.id }})
+  
+  if (product){
+      res.send(product)
+  }
+  else{
+      res.status(404).send({message:'Page not found'})
+  }
+}
+
+
 const getAddToCart=async (req,res)=>{
   const product=await Product.findOne({_id:req.params.id})
  

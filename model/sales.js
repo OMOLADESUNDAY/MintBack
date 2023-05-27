@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
 // import mongoose from 'mongoose'
-const productSchema=new mongoose.Schema({
+const saleSchema=new mongoose.Schema({
     name:{
         type:String,
         required:[true,"name required"],
@@ -10,25 +10,10 @@ const productSchema=new mongoose.Schema({
         type: String,
         required: true
     },
-    no_of_review:{
-        type:Number,
-        trim:true
-    },
-    countInStock:{
-        type:Number,
-        trim:true
-    },
-    category:{
-        type:String,
-        trim:true
-    },
+   
     price:{
         type:Number,
         required:[true,"price required"],
-        trim:true
-    },
-    rating:{
-        type:Number,
         trim:true
     },
     description:{
@@ -49,5 +34,5 @@ const productSchema=new mongoose.Schema({
 }
 )
 
-const Product= module.exports=mongoose.model('product',productSchema)
-module.exports= Product
+const Sale= module.exports=mongoose.model('sales',saleSchema)
+module.exports= Sale

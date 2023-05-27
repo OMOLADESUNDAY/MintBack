@@ -9,10 +9,12 @@ const AssetSchema = new mongoose.Schema({
     description:{type:String},
     image:{type:String},
     name:{type:String},
+    price:{type:Number},
     no_of_review:{type:Number},
     quantity:{type:Number},
     rating:{type:Number},
     updatedAt:{type:String},
+    userId:{type:String},
     __v:{Number},
      _id:{type:String}
   });
@@ -34,6 +36,10 @@ const AssetSchema = new mongoose.Schema({
       type: Boolean,
       default: false
     },
+    balance:{
+      type:Number,
+      default:0
+    },
     assets: {
       asset: [{
         type: AssetSchema,
@@ -49,6 +55,7 @@ const AssetSchema = new mongoose.Schema({
             quantity:0,
             rating:0,
             updatedAt:'',
+            userId:'',
             __v:'',
             _id:''
         }

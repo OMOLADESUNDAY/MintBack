@@ -5,7 +5,7 @@ const recentltySoldSchema=require('../model/recentlySoldSchema')
 
 const getRecentlySold = async(req, res) => {
     try {
-       
+      // const products=await recentltySoldSchema.insertMany(data.RecentSold)
         const products=await recentltySoldSchema.find().sort({timestamp:-1})
         
         res.send(products)

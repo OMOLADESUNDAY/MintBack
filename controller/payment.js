@@ -1,8 +1,8 @@
 const User=require('../model/userSchema')
 const Product=require('../model/productSchema')
+const Withdraw=require('../model/withdraw')
 const getPayment=async(req,res)=>{
     const {userId,transactionResponse,asset,totalPrice,etherPrice}=req.body
-    console.log(asset)
     try {
         const user= await User.findByIdAndUpdate({_id:userId}, {
             $push: {
@@ -30,9 +30,32 @@ const deleteProductOnPayment= async(req, res) => {
 };
 
 
+const makeWithdrawal=async(req,res)=>{
+  try {
+    const {userAddress,amountWitdraw,paymentMethod,WithdrawalId,amountInEth}=req.body
+    const withdraw= await Withdraw.create({userAddress,amountWitdraw,paymentMethod,WithdrawalId,amountInEth})
+    res.send(withdraw)
+  } catch (error) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
 
-
-
-module.exports={getPayment,deleteProductOnPayment}
+const getSingleWithdraw=async(req,res)=>{
+  try {
+    const {id}=req.params
+    const cursor =await Withdraw.find({ WithdrawalId: { $eq: id }});
+    if(cursor){
+      res.send(cursor)
+    }
+    else{
+      res.send([]);
+    }
+// }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+module.exports={getPayment,deleteProductOnPayment,makeWithdrawal,getSingleWithdraw}
 
 

@@ -71,6 +71,80 @@ const createNewProduct=(req, res) => {
     });
   }
 
+  const createNewAsset=(req, res) => {
+    upload(req, res, async (err) => {
+      const {name,price,description,userId,ownerName}=req.body
+      
+      if (err) {
+        console.log(err);
+        res.status(400).json({ message: err });
+      } else {
+        try {
+          
+          const result = await cloudinary.uploader.upload(req.file.path);
+          const image = result.secure_url       
+          const product = await Product.create({name,price,description,image,userId,ownerName})
+          res.status(200).send(product);
+        } catch (err) {
+          console.log(err);
+          res.status(500).json({ message: 'Internal server error' });
+        }
+      }
+    });
+  }
+
+  const AddAsset=(req, res) => {
+    upload(req, res, async (err) => {
+      const {userId,name,price,description}=req.body
+      
+      if (err) {
+        console.log(err);
+        res.status(400).json({ message: err });
+      } else {
+        try {
+          
+          const result = await cloudinary.uploader.upload(req.file.path);
+          const image = result.secure_url       
+          const asset=[{userId,name,description,price,image}]
+          const user= await User.findByIdAndUpdate({_id:userId}, {
+            $push: {
+              'assets.asset': {
+                $each: asset
+              }
+            }
+          });
+          
+         res.status(200).send(user.assets.asset)
+        } catch (err) {
+          console.log(err);
+          res.status(500).json({ message: 'Internal server error' });
+        }
+      }
+    });
+  }
+
+
+
+//   const AddAsset=async(req,res)=>{
+//     const {userId,name,description,price}=req.body
+//     console.log(req.body)
+//     const asset={userId,name,description,price}
+//     console.log(asset)
+//     try {
+//         const user= await User.findByIdAndUpdate({_id:userId}, {
+//             $push: {
+//               'assets.asset': {
+//                 $each: asset
+//               }
+//             }
+//           });
+          
+//          res.status(200).send(user.assets.asset)
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+
 const deleteProduct= async (req, res) => {
     const id = req.params.id;
     try {
@@ -170,4 +244,4 @@ const updateProduct= async (req, res) => {
 //     res.status(500).json({ message: 'Internal server error' });
 //   }
 // });
-module.exports={createNewProduct,deleteProduct,updateProduct,getAllProduct,deleteUser,getAllUser}
+module.exports={createNewProduct,deleteProduct,updateProduct,getAllProduct,deleteUser,getAllUser,createNewAsset,AddAsset}
